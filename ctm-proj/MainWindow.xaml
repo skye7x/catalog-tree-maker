@@ -1,0 +1,254 @@
+﻿<Window x:Class="ctm_proj.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CTM Project"
+        Icon="assets/icon.ico"
+        Height="450"
+        Width="800"
+        ResizeMode="NoResize"
+        FontFamily="Corbel">
+
+    <Grid
+        Margin="10"
+        RowDefinitions="Auto,Auto,*"
+        ColumnDefinitions="Auto,*,Auto,Auto">
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Select root folder:"
+            Style="{StaticResource MainLabelStyle}"/>
+
+        <TextBox
+            Grid.Row="0"
+            Grid.Column="1"
+            x:Name="FolderPathTextBox"
+            IsReadOnly="True"
+            Style="{StaticResource MainTextBoxStyle}"/>
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="2"
+            x:Name="ClearButton"
+            Margin="6,0,0,0"
+            Visibility="Collapsed"
+            Style="{StaticResource ClearButtonStyle}"
+            Click="ClearButton_Click"/>
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="3"
+            x:Name="ActionButton"
+            Content="Browse..."
+            Style="{StaticResource MainButtonStyle}"
+            Click="ActionButton_Click"/>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="4"
+            x:Name="ViewModePanel"
+            Orientation="Horizontal"
+            Margin="0,14,0,0"
+            VerticalAlignment="Center"
+            Visibility="Collapsed">
+
+            <Label
+                Content="View:"
+                Style="{StaticResource SubLabelStyle}"/>
+
+            <Border Style="{StaticResource SegmentGroupBorderStyle}">
+                <StackPanel Orientation="Horizontal">
+
+                    <RadioButton
+                        x:Name="DirectoriesRadioButton"
+                        Content="Directories"
+                        GroupName="ViewMode"
+                        IsChecked="True"
+                        Style="{StaticResource SegmentRadioButtonStyle}"
+                        Checked="ViewMode_Checked"/>
+
+                    <RadioButton
+                        x:Name="BitmapVectorRadioButton"
+                        Content="Bitmap / Vector"
+                        GroupName="ViewMode"
+                        Margin="4,0,0,0"
+                        Style="{StaticResource SegmentRadioButtonStyle}"
+                        Checked="ViewMode_Checked"/>
+
+                    <RadioButton
+                        x:Name="ConsoledRadioButton"
+                        Content="Consoled"
+                        GroupName="ViewMode"
+                        Margin="4,0,0,0"
+                        Style="{StaticResource SegmentRadioButtonStyle}"
+                        Checked="ViewMode_Checked"/>
+
+                </StackPanel>
+            </Border>
+
+            <CheckBox
+                x:Name="ShowFilesCheckBox"
+                Content="Show files"
+                IsChecked="True"
+                Style="{StaticResource OptionCheckBoxStyle}"
+                Checked="ShowFiles_Changed"
+                Unchecked="ShowFiles_Changed"/>
+
+        </StackPanel>
+
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="4"
+            Margin="0,12,0,0">
+
+            <ListBox
+                x:Name="ResultsListBox"
+                Style="{StaticResource MainListBoxStyle}"/>
+
+            <Grid
+                x:Name="GraphView"
+                RowDefinitions="Auto,*"
+                Visibility="Collapsed">
+
+                <StackPanel
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,8">
+
+                    <Button
+                        x:Name="SaveButton"
+                        Content="Save"
+                        Style="{StaticResource MainButtonStyle}"
+                        Click="SaveButton_Click"/>
+
+                    <Label
+                        Content="Graph:"
+                        Style="{StaticResource SubLabelStyle}"/>
+
+                </StackPanel>
+
+                <Popup
+                    x:Name="SavePopup"
+                    PlacementTarget="{Binding ElementName=SaveButton}"
+                    Placement="Bottom"
+                    StaysOpen="False"
+                    AllowsTransparency="True">
+
+                    <Border
+                        Background="White"
+                        BorderBrush="#BFBFBF"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="6"
+                        MinWidth="190">
+
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.35"/>
+                        </Border.Effect>
+
+                        <StackPanel>
+
+                            <TextBlock
+                                Text="PNG resolution"
+                                Style="{StaticResource DropdownHeaderStyle}"/>
+
+                            <Button
+                                Content="1280 × 720"
+                                Tag="1280x720"
+                                Style="{StaticResource DropdownItemStyle}"
+                                Click="SavePng_Click"/>
+
+                            <Button
+                                Content="1920 × 1080"
+                                Tag="1920x1080"
+                                Style="{StaticResource DropdownItemStyle}"
+                                Click="SavePng_Click"/>
+
+                            <Button
+                                Content="2560 × 1440"
+                                Tag="2560x1440"
+                                Style="{StaticResource DropdownItemStyle}"
+                                Click="SavePng_Click"/>
+
+                            <Button
+                                Content="3840 × 2160"
+                                Tag="3840x2160"
+                                Style="{StaticResource DropdownItemStyle}"
+                                Click="SavePng_Click"/>
+
+                            <Separator Margin="6,6"/>
+
+                            <Button
+                                Content="SVG (vector)"
+                                Style="{StaticResource DropdownItemStyle}"
+                                Click="SaveSvg_Click"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                </Popup>
+
+                <ScrollViewer
+                    Grid.Row="1"
+                    x:Name="GraphScrollViewer"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Auto"/>
+
+            </Grid>
+
+            <Grid
+                x:Name="ConsoleView"
+                RowDefinitions="Auto,*"
+                Visibility="Collapsed">
+
+                <StackPanel
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,8">
+
+                    <Button
+                        x:Name="CopyButton"
+                        Content="Copy"
+                        Style="{StaticResource MainButtonStyle}"
+                        Click="CopyConsole_Click"/>
+
+                    <Label
+                        Content="Console:"
+                        Style="{StaticResource SubLabelStyle}"/>
+
+                </StackPanel>
+
+                <Border
+                    Grid.Row="1"
+                    Background="#0C0C0C"
+                    BorderBrush="#3F3F46"
+                    BorderThickness="1"
+                    CornerRadius="6">
+
+                    <TextBox
+                        x:Name="ConsoleTextBox"
+                        IsReadOnly="True"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground="#FFFFFF"
+                        FontFamily="Consolas"
+                        FontSize="14"
+                        Padding="10"
+                        TextWrapping="NoWrap"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+
+                </Border>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

@@ -1,0 +1,6 @@
+root = true
+
+[*.{cs,xaml,csproj,props,targets}]
+
+# Namespace and assembly names intentionally use underscores (ctm_proj / ctm-proj).
+dotnet_diagnostic.CA1707.severity = none
